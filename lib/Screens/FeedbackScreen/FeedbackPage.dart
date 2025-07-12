@@ -344,7 +344,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         width: Get.width,
                         decoration: BoxDecoration(
                           color: ConstHelper.orangeColor,
-                          borderRadius: BorderRadius.circular(50),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         alignment: Alignment.center,
                         padding: EdgeInsets.symmetric(

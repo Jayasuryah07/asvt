@@ -1,2 +1,0 @@
-ninja: Entering directory `/Users/user/.pub-cache/hosted/pub.dev/rive_common-0.4.15/android/.cxx/RelWithDebInfo/644e6r4y/x86_64'
-[1/1] Linking CXX shared library /Users/user/StudioProjects/projects/asvt_flutter_app/build/rive_common/intermediates/cxx/RelWithDebInfo/644e6r4y/obj/x86_64/librive_text.so

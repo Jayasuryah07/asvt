@@ -1,7 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -26,6 +26,151 @@ class _GetStartedPageState extends State<GetStartedPage> {
   HomeController homeController = Get.put(HomeController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    Timer(
+      const Duration(
+        seconds: 10,
+      ),
+      () => Get.off(
+        const LoginPage(),
+      ),
+    );
+
+    /* bool login = SharedPrefHelper.sharedPreferences.getBool('login') ?? false;
+    Timer(
+      Duration(
+        seconds: login ? 2 : 10,
+      ),
+      () async {
+        EasyLoading.show(
+          status: ConstHelper.pleaseWaitMsg,
+        );
+        await Future.delayed(
+          Duration(
+            milliseconds: 200,
+          ),
+        );
+        if (!(await ConstHelper.checkInternet())) {
+          EasyLoading.dismiss();
+          ConstHelper.errorDialog(
+            text: ConstHelper.internetMsg,
+            seconds: 10,
+          );
+        } else {
+          try {
+            homeController.firebaseFCMToken.value =
+                await FirebaseHelper.firebaseHelper.getFirebaseToken();
+            if (login) {
+              await homeController.getUserData();
+              await ApiHelper.apiHelper
+                  .loginUser(
+                profileId:
+                    (homeController.userDataWithToken.value.data?.user == null
+                        ? '0'
+                        : homeController.userDataWithToken.value.data?.user
+                                ?.profileDeviceId ??
+                            '0'),
+                password:
+                    (homeController.userDataWithToken.value.data?.user == null
+                        ? '0'
+                        : homeController.userDataWithToken.value.data?.user
+                                ?.profilePassword ??
+                            '0'),
+                deviceId:
+                    homeController.firebaseFCMToken.value.substring(0, 50),
+              )
+                  .then(
+                (userData) async {
+                  if (userData.isNotEmpty) {
+                    if (userData['code'] == 200) {
+                      UserDataModel userDataModel =
+                          UserDataModel.fromJson(userData['data'] ?? {});
+                      SharedPrefHelper.sharedPreferences.setString(
+                        'userData',
+                        jsonEncode(userDataModel),
+                      );
+                      await homeController.getUserData();
+                      EasyLoading.dismiss();
+                      Get.off(
+                        const HomePage(),
+                      );
+                    } else {
+                      EasyLoading.dismiss();
+                      Get.off(
+                        const HomePage(),
+                      );
+                    }
+                  } else {
+                    EasyLoading.dismiss();
+                    Get.off(
+                      const HomePage(),
+                    );
+                  }
+                },
+              );
+              // await homeController.getUserData().then((value) async {
+              //   if(homeController.firebaseFCMToken.value.substring(0,50) == (homeController.userDataWithToken.value.user == null ? '' : homeController.userDataWithToken.value.user?.profileDeviceId))
+              //   {
+              //     EasyLoading.dismiss();
+              //     Get.off(const HomePage(),);
+              //   }
+              //   else if(homeController.firebaseFCMToken.trim().isNotEmpty) {
+              //     await ApiHelper.apiHelper.loginUser(profileId: (homeController.userDataWithToken.value.user == null ? '0' : homeController.userDataWithToken.value.user?.profileDeviceId ?? '0'), password: (homeController.userDataWithToken.value.user == null ? '0' : homeController.userDataWithToken.value.user?.profileCpassword ?? '0'), deviceId: homeController.firebaseFCMToken.value.substring(0,50),).then((userData) {
+              //       if(userData.isNotEmpty)
+              //       {
+              //         if(userData['code'] == 200)
+              //         {
+              //           UserDataModel userDataModel = UserDataModel.fromJson(userData['data'] ?? {});
+              //           SharedPrefHelper.sharedPreferences.setString('userData', jsonEncode(userDataModel),);
+              //           EasyLoading.dismiss();
+              //           Get.off(const HomePage(),);
+              //         }
+              //         else
+              //         {
+              //           EasyLoading.dismiss();
+              //           Get.off(const HomePage(),);
+              //         }
+              //       }
+              //       else
+              //       {
+              //         EasyLoading.dismiss();
+              //         Get.off(const HomePage(),);
+              //       }
+              //     },);
+              //   }
+              //   else
+              //   {
+              //     EasyLoading.dismiss();
+              //     Get.off(const HomePage(),);
+              //   }
+              // },);
+            } else {
+              EasyLoading.dismiss();
+              Get.off(
+                const LoginPage(),
+              );
+            }
+          } catch (error) {
+            if (login) {
+              EasyLoading.dismiss();
+              Get.off(
+                const HomePage(),
+              );
+            } else {
+              EasyLoading.dismiss();
+              Get.off(
+                const LoginPage(),
+              );
+            }
+          }
+        }
+      },
+    );*/
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -37,7 +182,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
+                /* SizedBox(
                   height: Get.width,
                   child: Stack(
                     children: [
@@ -226,6 +371,13 @@ class _GetStartedPageState extends State<GetStartedPage> {
                       ),
                     ],
                   ),
+                ),*/
+                SizedBox(
+                  height: Get.height * 0.09,
+                ),
+                Image.asset(
+                  "assets/image/applogo.png",
+                  width: Get.width / 2,
                 ),
                 SizedBox(
                   height: Get.height * 0.03,

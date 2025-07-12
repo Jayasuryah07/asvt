@@ -16,6 +16,7 @@ import 'package:get/get.dart' as getX;
 import '../Controllers/HomeController.dart';
 import '../Models/MembersDataModel.dart';
 import '../Models/UserDataModel.dart';
+import '../Models/sponsers_model.dart';
 import 'API.dart';
 
 class ApiHelper {
@@ -123,24 +124,53 @@ class ApiHelper {
     required String id,
   }) async {
     getAuthorizationToken();
-    var headers = {
-      'Authorization': 'Bearer $authorizationToken',
-    };
-    var data = FormData.fromMap({'profile_id': id});
+    try {
+      var headers = {
+        'Authorization': 'Bearer $authorizationToken',
+      };
+      var data = FormData.fromMap({'profile_id': id});
 
-    Response response = await api.dio.post('fetch-profiles-by-id',
-        data: data,
-        options: Options(
-          headers: headers,
-        ));
+      Response response = await api.dio.post('fetch-profiles-by-id',
+          data: data,
+          options: Options(
+            headers: headers,
+          ));
 
-    if (response.statusCode == 200) {
-      var data = response.data;
-      print(data);
-      return MembersDataModel.fromJson(data["data"][0]);
-    } else {
-      print(response.statusMessage);
+      if (response.statusCode == 200) {
+        var data = response.data;
+        print(data);
+        return MembersDataModel.fromJson(data["data"][0]);
+      } else {
+        print(response.statusMessage);
+        return MembersDataModel();
+      }
+    } catch (e) {
       return MembersDataModel();
+    }
+  }
+
+  Future<List<SponItem>?> getSponsersList() async {
+    getAuthorizationToken();
+    try {
+      var headers = {
+        'Authorization': 'Bearer $authorizationToken',
+      };
+
+      Response response = await api.dio.post('fetch-sponsers',
+          options: Options(
+            headers: headers,
+          ));
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        print(data);
+        return SponseredModel.fromJson(data).data ?? [];
+      } else {
+        print(response.statusMessage);
+        return [];
+      }
+    } catch (e) {
+      return [];
     }
   }
 

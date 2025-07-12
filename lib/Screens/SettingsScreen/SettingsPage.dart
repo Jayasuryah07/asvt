@@ -1194,7 +1194,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     child: Text(
                                       homeController.educationDataList[index]
                                               ['education_name'] ??
-                                          'N/A',
+                                          '-',
                                       style: TextStyle(
                                         color:
                                             (homeController.educationDataList[
@@ -1250,7 +1250,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ? ConstHelper.orangeColor
                                         : ConstHelper.cementColor
                                             .withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
@@ -1288,7 +1288,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ? ConstHelper.orangeColor
                                         : ConstHelper.cementColor
                                             .withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
@@ -1326,7 +1326,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ? ConstHelper.orangeColor
                                         : ConstHelper.cementColor
                                             .withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
@@ -1392,7 +1392,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ? ConstHelper.orangeColor
                                         : ConstHelper.cementColor
                                             .withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
@@ -1433,7 +1433,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ? ConstHelper.orangeColor
                                         : ConstHelper.cementColor
                                             .withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
@@ -1474,7 +1474,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ? ConstHelper.orangeColor
                                         : ConstHelper.cementColor
                                             .withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
@@ -1599,7 +1599,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           width: Get.width,
                           decoration: BoxDecoration(
                             color: ConstHelper.greyColor,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           alignment: Alignment.center,
                           padding: EdgeInsets.symmetric(
@@ -1666,7 +1666,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           width: Get.width,
                           decoration: BoxDecoration(
                             color: ConstHelper.orangeColor,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           alignment: Alignment.center,
                           padding: EdgeInsets.symmetric(
@@ -1700,8 +1700,8 @@ class _SettingsPageState extends State<SettingsPage> {
     List<String> educationCategory = [];
     for (int i = 0; i < homeController.educationDataList.length; i++) {
       if (homeController.educationDataList[i]['selected'] == true) {
-        educationCategory.add(
-            homeController.educationDataList[i]['education_name'] ?? 'N/A');
+        educationCategory
+            .add(homeController.educationDataList[i]['education_name'] ?? '-');
       }
     }
     try {

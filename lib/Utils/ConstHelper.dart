@@ -6,6 +6,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:ntp/ntp.dart';
 
@@ -38,14 +39,16 @@ class ConstHelper {
   static String nameNotAvailableMsg = "Name not available";
   static String fatherNameNotAvailableMsg = "Father name not available";
   static String emailNotAvailableMsg = "Email not available";
-  static String naMsg = "N/A";
+  static String naMsg = '-';
   static String yesMsg = "Yes";
   static String noMsg = "No";
   static String mobileNoNotAvailableMsg = "Mobile number not available";
   static String userImagesPath =
-      "https://agstask.online/public/app_images/user_images/";
+      "https://asvtbangalore.com/public/app_images/user_images/";
   static String profileImagePath =
-      "https://agstask.online/public/app_images/user_images/no_profile.png";
+      "https://asvtbangalore.com/public/app_images/user_images/no_profile.png";
+  static String sponImgPath =
+      "https://asvtbangalore.com/public/app_images/sponsor_ads/";
   static String dataUpdatedSuccessfullyMsg = 'Data Updated Successfully';
   static String dataSubmittedSuccessfullyMsg = 'Data Submitted Successfully';
   static String dataDeletedSuccessfullyMsg = 'Data Deleted Successfully';
@@ -55,6 +58,7 @@ class ConstHelper {
 
   /// Internet Connection Checking
 
+/*
   static Future<bool> checkInternet() async {
     try {
       var connectivityResultList = await Connectivity().checkConnectivity();
@@ -65,6 +69,24 @@ class ConstHelper {
           .toList()
           .isNotEmpty;
     } catch (error) {
+      return false;
+    }
+  }
+*/
+
+  /// Internet Connection Checking
+  static Future<bool> checkInternet() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult.first == ConnectivityResult.none) return false;
+
+    try {
+      final result =
+          await http.get(Uri.parse('https://www.google.com')).timeout(
+                const Duration(seconds: 5),
+              );
+      return result.statusCode == 200;
+    } catch (_) {
       return false;
     }
   }
@@ -159,83 +181,82 @@ class ConstHelper {
       context: navigatorKey.currentContext!,
       barrierDismissible: false,
       builder: (context) {
-        return BackdropFilter(
-          filter: filter,
-          child: AlertDialog(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        title.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: ConstHelper.orangeDarkColor,
-                          fontSize: Get.width * 0.05,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: Get.height * 0.015,
-                ),
-                Text(
-                  description,
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    color: ConstHelper.blackColor,
-                    fontSize: Get.width * 0.045,
-                  ),
-                ),
-              ],
-            ),
-            actions: [
+        return AlertDialog(
+          actionsPadding: EdgeInsets.symmetric(
+              horizontal: Get.width * 0.02, vertical: Get.height * 0.01),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
               Row(
                 children: [
                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: whiteColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6))),
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                          color: orangeColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: onPressed,
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: orangeColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6))),
-                      child: Text(
-                        "Confirm",
-                        style: TextStyle(
-                          color: whiteColor,
-                        ),
+                    child: Text(
+                      title.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: ConstHelper.orangeDarkColor,
+                        fontSize: Get.width * 0.05,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ],
               ),
+              SizedBox(
+                height: Get.height * 0.015,
+              ),
+              Text(
+                description,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: ConstHelper.blackColor,
+                  fontSize: Get.width * 0.045,
+                ),
+              ),
             ],
           ),
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: whiteColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6))),
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                        color: orangeColor,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: Get.width * 0.02,
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: onPressed,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: orangeColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6))),
+                    child: Text(
+                      "Confirm",
+                      style: TextStyle(
+                        color: whiteColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         );
       },
     );

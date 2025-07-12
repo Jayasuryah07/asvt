@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -11,7 +13,6 @@ import '../../Controllers/HomeController.dart';
 import '../../Models/UserDataModel.dart';
 import '../../Utils/ApiHelper.dart';
 import '../../Utils/ConstHelper.dart';
-import '../../Utils/FirebaseHelper.dart';
 import '../../Utils/SharedPrefHelper.dart';
 import '../HomeScreen/HomePage.dart';
 import '../SignUpScreen/SignUpPage.dart';
@@ -35,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    //EasyLoading.dismiss();
     return SafeArea(
       child: Scaffold(
         backgroundColor: ConstHelper.whiteColor,
@@ -143,19 +145,19 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: InputDecoration(
                                 counterText: "",
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
                                     color: ConstHelper.whiteColor,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
                                     color: ConstHelper.whiteColor,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
                                     color: ConstHelper.whiteColor,
                                   ),
@@ -209,19 +211,19 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: InputDecoration(
                                 counterText: "",
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
                                     color: ConstHelper.whiteColor,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
                                     color: ConstHelper.whiteColor,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
                                     color: ConstHelper.whiteColor,
                                   ),
@@ -307,6 +309,8 @@ class _LoginPageState extends State<LoginPage> {
                                     seconds: 10,
                                   );
                                 } else {
+                                  ///523
+                                  ///asvt50965
                                   if (txtUsername.text.trim().isEmpty) {
                                     EasyLoading.dismiss();
                                     usernameFocusNode.requestFocus();
@@ -316,73 +320,95 @@ class _LoginPageState extends State<LoginPage> {
                                   }
 
                                   if (formKey.currentState!.validate()) {
-                                    // try {
-                                    homeController.firebaseFCMToken.value =
-                                        await FirebaseHelper.firebaseHelper
-                                            .getFirebaseToken();
-                                    log("Token : ${await FirebaseHelper.firebaseHelper.getFirebaseToken()}");
-                                    log("Token : ${homeController.firebaseFCMToken.value}");
-                                    await ApiHelper.apiHelper
-                                        .loginUser(
-                                      profileId: txtUsername.text.toString(),
-                                      password: txtPassword.text.trim(),
-                                      deviceId: await FirebaseHelper
-                                          .firebaseHelper
-                                          .getFirebaseToken(),
-                                    )
-                                        .then(
-                                      (userData) async {
-                                        if (userData.isNotEmpty) {
-                                          if (userData['code'] == 200) {
-                                            UserDataModel userDataModel =
-                                                UserDataModel.fromJson(
-                                                    userData);
+                                    try {
+                                      var token;
+                                      if (Platform.isIOS) {
+                                        token = await FirebaseMessaging.instance
+                                            .getAPNSToken();
+                                        debugPrint('APNS Token: $token');
+                                      } else {
+                                        FirebaseMessaging messaging =
+                                            FirebaseMessaging.instance;
+                                        token = await messaging.getToken();
+                                        debugPrint('APNS Token: $token');
+                                      }
 
-                                            print(userDataModel.data?.token ??
-                                                "");
-                                            SharedPrefHelper.sharedPreferences
-                                                .setBool(
-                                              'login',
-                                              true,
-                                            );
-                                            SharedPrefHelper.sharedPreferences
-                                                .setString(
-                                              'userData',
-                                              jsonEncode(userDataModel),
-                                            );
-                                            await homeController.getUserData();
-                                            EasyLoading.dismiss();
-                                            homeController
-                                                    .advancedDrawerController =
-                                                AdvancedDrawerController();
-                                            Get.off(
-                                              const HomePage(),
-                                            );
-                                            ConstHelper.successDialog(
-                                              text: 'Login Successfully',
-                                              seconds: 10,
-                                            );
+                                      homeController.firebaseFCMToken.value =
+                                          token ?? "";
+                                      log("Token : ${token}");
+                                      log("Token : ${homeController.firebaseFCMToken.value}");
+
+                                      await ApiHelper.apiHelper
+                                          .loginUser(
+                                        profileId: txtUsername.text.toString(),
+                                        password: txtPassword.text.trim(),
+                                        deviceId: token ?? "",
+                                      )
+                                          .then(
+                                        (userData) async {
+                                          if (userData.isNotEmpty) {
+                                            if (userData['code'] == 200) {
+                                              UserDataModel userDataModel =
+                                                  UserDataModel.fromJson(
+                                                      userData);
+
+                                              print(userDataModel.data?.token ??
+                                                  "");
+                                              SharedPrefHelper.sharedPreferences
+                                                  .setBool(
+                                                'login',
+                                                true,
+                                              );
+                                              SharedPrefHelper.sharedPreferences
+                                                  .setString(
+                                                'userData',
+                                                jsonEncode(userDataModel),
+                                              );
+                                              await homeController
+                                                  .getUserData();
+                                              EasyLoading.dismiss();
+                                              homeController
+                                                      .advancedDrawerController =
+                                                  AdvancedDrawerController();
+                                              Get.off(
+                                                const HomePage(),
+                                              );
+                                              Get.snackbar(
+                                                "Success",
+                                                "Login Successfully",
+                                                snackPosition:
+                                                    SnackPosition.BOTTOM,
+                                              );
+                                            } else {
+                                              EasyLoading.dismiss();
+                                              Get.snackbar(
+                                                "Error!",
+                                                userData['msg'] ??
+                                                    ConstHelper
+                                                        .somethingErrorMsg,
+                                                snackPosition:
+                                                    SnackPosition.BOTTOM,
+                                              );
+                                            }
                                           } else {
                                             EasyLoading.dismiss();
-                                            ConstHelper.errorDialog(
-                                              text: userData['msg'] ??
-                                                  ConstHelper.somethingErrorMsg,
-                                              seconds: 10,
+                                            Get.snackbar(
+                                              "Error!",
+                                              'Unauthorised.',
+                                              snackPosition:
+                                                  SnackPosition.BOTTOM,
                                             );
                                           }
-                                        } else {
-                                          EasyLoading.dismiss();
-                                          ConstHelper.errorDialog(
-                                            text: 'Unauthorised.',
-                                            seconds: 10,
-                                          );
-                                        }
-                                      },
-                                    );
-                                    /* } catch(error) {
+                                        },
+                                      );
+                                    } catch (error) {
                                       EasyLoading.dismiss();
-                                      ConstHelper.errorDialog(text: ConstHelper.somethingErrorMsg, seconds: 10,);
-                                    }*/
+                                      Get.snackbar(
+                                        "Error!",
+                                        ConstHelper.somethingErrorMsg,
+                                        snackPosition: SnackPosition.BOTTOM,
+                                      );
+                                    }
                                   } else {
                                     EasyLoading.dismiss();
                                   }
@@ -392,7 +418,7 @@ class _LoginPageState extends State<LoginPage> {
                                 width: Get.width,
                                 decoration: BoxDecoration(
                                   color: ConstHelper.orangeColor,
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.symmetric(

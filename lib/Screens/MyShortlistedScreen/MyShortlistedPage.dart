@@ -179,258 +179,314 @@ class _MyShortlistedPageState extends State<MyShortlistedPage> {
                                   color: ConstHelper.greyColor.withOpacity(0.2),
                                 ),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                vertical: Get.width / 30,
-                              ),
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
+                              child: Stack(
+                                alignment: Alignment.bottomRight,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: Get.width / 30,
+                                    ),
+                                    child: IntrinsicHeight(
                                       child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            width: 2,
-                                            decoration: BoxDecoration(
-                                              color: ConstHelper.orangeColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width / 30,
-                                          ),
-                                          IntrinsicHeight(
-                                            child: Container(
-                                              width: Get.width / 5,
-                                              height: Get.width / 5,
-                                              decoration: BoxDecoration(
-                                                color: ConstHelper.whiteColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(7.5),
-                                                border: Border.all(
-                                                  color: ConstHelper.greyColor
-                                                      .withOpacity(0.3),
-                                                ),
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(6),
-                                                child: CachedNetworkImage(
-                                                  imageUrl: homeController
-                                                                  .allShortlistedDataList[
-                                                                      index]
-                                                                  .profileFullFacePhotoFileName ==
-                                                              null ||
-                                                          homeController
-                                                              .allShortlistedDataList[
-                                                                  index]
-                                                              .profileFullFacePhotoFileName!
-                                                              .trim()
-                                                              .isEmpty
-                                                      ? ConstHelper
-                                                          .profileImagePath
-                                                      : '${ConstHelper.userImagesPath}${homeController.allShortlistedDataList[index].profileFullFacePhotoFileName!}',
-                                                  fit: BoxFit.cover,
-                                                  placeholder: (context, url) =>
-                                                      Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6),
-                                                      color: ConstHelper
-                                                          .whiteColor,
-                                                    ),
-                                                    alignment: Alignment.center,
-                                                    child: SizedBox(
-                                                      height: Get.width / 20,
-                                                      width: Get.width / 20,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color: ConstHelper
-                                                            .orangeColor,
-                                                        strokeWidth: 2,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6),
-                                                      color: ConstHelper
-                                                          .whiteColor,
-                                                    ),
-                                                    child: Image.asset(
-                                                      'assets/image/imageNotFound.png',
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width / 30,
-                                          ),
                                           Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                            child: Row(
                                               children: [
-                                                Text(
-                                                  '${homeController.allShortlistedDataList[index].id == null || homeController.allShortlistedDataList[index].id == 0 ? 'Id not available' : homeController.allShortlistedDataList[index].id!} - ${homeController.allShortlistedDataList[index].name == null || homeController.allShortlistedDataList[index].name!.trim().isEmpty ? ConstHelper.nameNotAvailableMsg : homeController.allShortlistedDataList[index].name}',
-                                                  style: TextStyle(
-                                                    color: ConstHelper
-                                                        .orangeDarkColor,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: Get.width * 0.04,
+                                                Container(
+                                                  width: 2,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        ConstHelper.orangeColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
                                                   ),
                                                 ),
-                                                // Text(
-                                                //   homeController.allShortlistedDataList[index].profileFatherFullName == null || homeController.allShortlistedDataList[index].profileFatherFullName!.trim().isEmpty ? ConstHelper.fatherNameNotAvailableMsg : homeController.allShortlistedDataList[index].profileFatherFullName!,
-                                                //   style: TextStyle(
-                                                //     color: ConstHelper.greyColor,
-                                                //     fontWeight: FontWeight.w500,
-                                                //     fontSize: 12,
-                                                //   ),
-                                                // ),
-                                                Row(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'DOB : ',
-                                                          style: TextStyle(
-                                                            color: ConstHelper
-                                                                .blackColor,
-                                                            fontSize:
-                                                                Get.width *
-                                                                    0.035,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          homeController
-                                                                          .allShortlistedDataList[
-                                                                              index]
-                                                                          .profileDateOfBirth ==
-                                                                      null ||
-                                                                  homeController
-                                                                          .allShortlistedDataList[
-                                                                              index]
-                                                                          .profileDateOfBirth!
-                                                                          .year <=
-                                                                      0
-                                                              ? 'N/A'
-                                                              : DateFormat(
-                                                                      'dd | MMM | yyyy')
-                                                                  .format(homeController
-                                                                      .allShortlistedDataList[
-                                                                          index]
-                                                                      .profileDateOfBirth!),
-                                                          style: TextStyle(
-                                                            color: ConstHelper
-                                                                .greyColor,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize:
-                                                                Get.width *
-                                                                    0.035,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      width: Get.width / 30,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'EDU : ',
-                                                          style: TextStyle(
-                                                            color: ConstHelper
-                                                                .blackColor,
-                                                            fontSize:
-                                                                Get.width *
-                                                                    0.035,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          homeController
-                                                                          .allShortlistedDataList[
-                                                                              index]
-                                                                          .profileEducationQualification ==
-                                                                      null ||
-                                                                  homeController
-                                                                      .allShortlistedDataList[
-                                                                          index]
-                                                                      .profileEducationQualification!
-                                                                      .trim()
-                                                                      .isEmpty
-                                                              ? 'N/A'
-                                                              : homeController
-                                                                  .allShortlistedDataList[
-                                                                      index]
-                                                                  .profileEducationQualification!,
-                                                          style: TextStyle(
-                                                            color: ConstHelper
-                                                                .greyColor,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize:
-                                                                Get.width *
-                                                                    0.035,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
+                                                SizedBox(
+                                                  width: Get.width / 30,
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      'City : ',
-                                                      style: TextStyle(
+                                                IntrinsicHeight(
+                                                  child: Container(
+                                                    width: Get.width / 5,
+                                                    height: Get.width / 5,
+                                                    decoration: BoxDecoration(
+                                                      color: ConstHelper
+                                                          .whiteColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              7.5),
+                                                      border: Border.all(
                                                         color: ConstHelper
-                                                            .blackColor,
-                                                        fontSize:
-                                                            Get.width * 0.035,
+                                                            .greyColor
+                                                            .withOpacity(0.3),
                                                       ),
                                                     ),
-                                                    Expanded(
-                                                      child: Text(
-                                                        '${homeController.allShortlistedDataList[index].profilePresentCity == null || homeController.allShortlistedDataList[index].profilePresentCity!.trim().isEmpty ? 'N/A' : homeController.allShortlistedDataList[index].profilePresentCity!}',
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6),
+                                                      child: CachedNetworkImage(
+                                                        imageUrl: homeController
+                                                                        .allShortlistedDataList[
+                                                                            index]
+                                                                        .profileFullFacePhotoFileName ==
+                                                                    null ||
+                                                                homeController
+                                                                    .allShortlistedDataList[
+                                                                        index]
+                                                                    .profileFullFacePhotoFileName!
+                                                                    .trim()
+                                                                    .isEmpty
+                                                            ? ConstHelper
+                                                                .profileImagePath
+                                                            : '${ConstHelper.userImagesPath}${homeController.allShortlistedDataList[index].profileFullFacePhotoFileName!}',
+                                                        fit: BoxFit.cover,
+                                                        placeholder:
+                                                            (context, url) =>
+                                                                Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6),
+                                                            color: ConstHelper
+                                                                .whiteColor,
+                                                          ),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: SizedBox(
+                                                            height:
+                                                                Get.width / 20,
+                                                            width:
+                                                                Get.width / 20,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              color: ConstHelper
+                                                                  .orangeColor,
+                                                              strokeWidth: 2,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6),
+                                                            color: ConstHelper
+                                                                .whiteColor,
+                                                          ),
+                                                          child: Image.asset(
+                                                            'assets/image/imageNotFound.png',
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: Get.width / 30,
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        '${homeController.allShortlistedDataList[index].id == null || homeController.allShortlistedDataList[index].id == 0 ? 'Id not available' : homeController.allShortlistedDataList[index].id!} - ${homeController.allShortlistedDataList[index].name == null || homeController.allShortlistedDataList[index].name!.trim().isEmpty ? ConstHelper.nameNotAvailableMsg : homeController.allShortlistedDataList[index].name}',
                                                         style: TextStyle(
                                                           color: ConstHelper
-                                                              .greyColor,
+                                                              .orangeDarkColor,
                                                           fontWeight:
-                                                              FontWeight.w500,
+                                                              FontWeight.w600,
                                                           fontSize:
-                                                              Get.width * 0.035,
+                                                              Get.width * 0.04,
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                      // Text(
+                                                      //   homeController.allShortlistedDataList[index].profileFatherFullName == null || homeController.allShortlistedDataList[index].profileFatherFullName!.trim().isEmpty ? ConstHelper.fatherNameNotAvailableMsg : homeController.allShortlistedDataList[index].profileFatherFullName!,
+                                                      //   style: TextStyle(
+                                                      //     color: ConstHelper.greyColor,
+                                                      //     fontWeight: FontWeight.w500,
+                                                      //     fontSize: 12,
+                                                      //   ),
+                                                      // ),
+                                                      Row(
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                'DOB : ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: ConstHelper
+                                                                      .blackColor,
+                                                                  fontSize:
+                                                                      Get.width *
+                                                                          0.035,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                homeController.allShortlistedDataList[index].profileDateOfBirth ==
+                                                                            null ||
+                                                                        homeController.allShortlistedDataList[index].profileDateOfBirth!.year <=
+                                                                            0
+                                                                    ? '-'
+                                                                    : DateFormat('dd | MMM | yyyy').format(homeController
+                                                                        .allShortlistedDataList[
+                                                                            index]
+                                                                        .profileDateOfBirth!),
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: ConstHelper
+                                                                      .blackColor
+                                                                      .withOpacity(
+                                                                          0.7),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize:
+                                                                      Get.width *
+                                                                          0.035,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            width:
+                                                                Get.width / 30,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                'EDU : ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: ConstHelper
+                                                                      .blackColor,
+                                                                  fontSize:
+                                                                      Get.width *
+                                                                          0.035,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                homeController.allShortlistedDataList[index].profileEducationQualification ==
+                                                                            null ||
+                                                                        homeController
+                                                                            .allShortlistedDataList[
+                                                                                index]
+                                                                            .profileEducationQualification!
+                                                                            .trim()
+                                                                            .isEmpty
+                                                                    ? '-'
+                                                                    : homeController
+                                                                        .allShortlistedDataList[
+                                                                            index]
+                                                                        .profileEducationQualification!,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: ConstHelper
+                                                                      .blackColor
+                                                                      .withOpacity(
+                                                                          0.7),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize:
+                                                                      Get.width *
+                                                                          0.035,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            'Profession : ',
+                                                            style: TextStyle(
+                                                              color: ConstHelper
+                                                                  .blackColor,
+                                                              fontSize:
+                                                                  Get.width *
+                                                                      0.035,
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Text(
+                                                              homeController.allShortlistedDataList[index].profileProfession ==
+                                                                          null ||
+                                                                      homeController
+                                                                          .allShortlistedDataList[
+                                                                              index]
+                                                                          .profileProfession!
+                                                                          .trim()
+                                                                          .isEmpty
+                                                                  ? '-'
+                                                                  : homeController
+                                                                      .allShortlistedDataList[
+                                                                          index]
+                                                                      .profileProfession!,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                color: ConstHelper
+                                                                    .blackColor
+                                                                    .withOpacity(
+                                                                        0.7),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize:
+                                                                    Get.width *
+                                                                        0.035,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ),
+                                          // SvgPicture.asset('assets/image/menuVerticalIconSVG.svg',height: Get.width/25,width: Get.width/25,),
+                                          SizedBox(
+                                            width: Get.width / 90,
+                                          ),
                                         ],
                                       ),
                                     ),
-                                    // SvgPicture.asset('assets/image/menuVerticalIconSVG.svg',height: Get.width/25,width: Get.width/25,),
-                                    SizedBox(
-                                      width: Get.width / 90,
+                                  ),
+                                  if (homeController
+                                              .allShortlistedDataList[index]
+                                              .profileHaveMarriedBefore !=
+                                          null &&
+                                      homeController
+                                              .allShortlistedDataList[index]
+                                              .profileHaveMarriedBefore
+                                              .toString()
+                                              .toLowerCase() !=
+                                          "no")
+                                    Image.asset(
+                                      "assets/image/re-marriage.png",
+                                      height: Get.height * 0.06,
                                     ),
-                                  ],
-                                ),
+                                ],
                               ),
                             ),
                           );

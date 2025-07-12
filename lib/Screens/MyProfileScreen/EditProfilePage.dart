@@ -85,15 +85,11 @@ class _EditprofilepageState extends State<Editprofilepage> {
         "";
     briefOfFatherProfession.text =
         homeController.userData.value.briefFatherProfession ?? "";
-    for (var item in professionModel.value.data ?? []) {
-      print(item.profession);
-      print(selectedProfession.value);
-      if (item.profession != selectedProfession.value) {
-        selectedProfession.value = "";
-      } else {
-        selectedProfession.value =
-            homeController.userData.value.profileProfession ?? "";
-      }
+    selectedProfession.value =
+        homeController.userData.value.profileProfession ?? "";
+    if (!(professionModel.value.data!
+        .any((element) => element.profession == selectedProfession.value))) {
+      selectedProfession.value = "";
     }
 
     marriedBrotherCon.value =
@@ -112,20 +108,20 @@ class _EditprofilepageState extends State<Editprofilepage> {
     spouseYoungerBy.value =
         homeController.userData.value.profileSpouseCanBeYoungerBy ?? "";
     budgetOfBride.value = homeController.budgetCateModel.value.data
-            ?.firstWhere((element) =>
+            ?.firstWhereOrNull((element) =>
                 element.id.toString() ==
                 (homeController.userData.value.profileBudgetCategoryId
                     .toString()))
-            .ranges ??
+            ?.ranges ??
         "";
     budgetOfGroom.value = homeController.budgetCateModel.value.data
-            ?.firstWhere(
+            ?.firstWhereOrNull(
               (element) =>
                   element.id.toString() ==
                   homeController.userData.value.profileGroomBudgetCategoryId
                       .toString(),
             )
-            .ranges ??
+            ?.ranges ??
         "";
     spouseYoungerBy.value =
         homeController.userData.value.profileSpouseCanBeYoungerBy ?? "";
@@ -138,6 +134,8 @@ class _EditprofilepageState extends State<Editprofilepage> {
 
     marrySameGotra.value =
         homeController.userData.value.profileWillMarryInSameGotra ?? "";
+    print(homeController.userData.value.profileWillMatchGanna);
+    print(homeController.userData.value.profileWillMatchGanna);
     willYouMatchingGanna.value =
         homeController.userData.value.profileWillMatchGanna ?? "";
     areYouManglik.value = homeController.userData.value.profileIsManglik ?? "";
@@ -156,14 +154,14 @@ class _EditprofilepageState extends State<Editprofilepage> {
         "";
     selectedHouseType.value =
         homeController.userData.value.profileHouseType?.toString() ?? "";
-    for (var item in professionModel.value.data ?? []) {
+    /*for (var item in professionModel.value.data ?? []) {
       print(item.profession);
       print(selectedProfession.value);
       if (item.profession != selectedProfession.value) {
         selectedProfession.value = "";
         setState(() {});
       }
-    }
+    }*/
   }
 
   @override
@@ -202,7 +200,8 @@ class _EditprofilepageState extends State<Editprofilepage> {
         "Place of Residence after Marriage: ${placeOfResidenceAfterMarriage.text}");
     print("Selected House Type: ${selectedHouseType.value}");
     print("----------------------------");*/
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         title: Text(
           "Edit Profile",
@@ -450,7 +449,7 @@ class _EditprofilepageState extends State<Editprofilepage> {
                             label: "Mother's Name",
                             subLabel: homeController
                                     .userData.value.profileMotherFullName ??
-                                "N/A",
+                                '-',
                           ),
                         ),
                         Expanded(
@@ -458,7 +457,7 @@ class _EditprofilepageState extends State<Editprofilepage> {
                               label: "Main Contact Number",
                               subLabel: homeController
                                       .userData.value.profileMainContactNum ??
-                                  "N/A"),
+                                  '-'),
                         ),
                       ],
                     ).paddingOnly(
@@ -471,7 +470,7 @@ class _EditprofilepageState extends State<Editprofilepage> {
                               label: "Main Contact Name",
                               subLabel: homeController.userData.value
                                       .profileMainContactFullName ??
-                                  "N/A"),
+                                  '-'),
                         ),
                       ],
                     ).paddingOnly(
@@ -508,6 +507,9 @@ class _EditprofilepageState extends State<Editprofilepage> {
                           child: CommonTextFormField(
                             controller: annualIncomeCon,
                             label: 'Annual Income(Lakh)',
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: Get.height * 0.01,
+                                horizontal: Get.width * 0.04),
                           ),
                         ),
                       ],
@@ -523,6 +525,9 @@ class _EditprofilepageState extends State<Editprofilepage> {
                             child: CommonTextFormField(
                               controller: companyNameCon,
                               label: 'Company name',
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: Get.height * 0.01,
+                                  horizontal: Get.width * 0.04),
                             ),
                           ),
                           SizedBox(
@@ -532,6 +537,9 @@ class _EditprofilepageState extends State<Editprofilepage> {
                             child: CommonTextFormField(
                               controller: companyTypeCon,
                               label: 'Company Type',
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: Get.height * 0.01,
+                                  horizontal: Get.width * 0.04),
                             ),
                           ),
                         ],
@@ -545,6 +553,9 @@ class _EditprofilepageState extends State<Editprofilepage> {
                           child: CommonTextFormField(
                             controller: altContactNumber,
                             label: 'Alt Contact Number',
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: Get.height * 0.01,
+                                horizontal: Get.width * 0.04),
                           ),
                         ),
                         SizedBox(
@@ -554,6 +565,9 @@ class _EditprofilepageState extends State<Editprofilepage> {
                           child: CommonTextFormField(
                             controller: altContactName,
                             label: 'Alt Contact Name',
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: Get.height * 0.01,
+                                horizontal: Get.width * 0.04),
                           ),
                         ),
                       ],
@@ -668,6 +682,9 @@ class _EditprofilepageState extends State<Editprofilepage> {
                     CommonTextFormField(
                       controller: currantAddress,
                       label: "Currant Residential Address(Candidate)",
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: Get.height * 0.01,
+                          horizontal: Get.width * 0.04),
                       maxLines: 3,
                     ),
                     HouseTypeSelector(
@@ -878,6 +895,9 @@ class _EditprofilepageState extends State<Editprofilepage> {
                     CommonTextFormField(
                       controller: briefOfFatherProfession,
                       label: "Brief Summary of Family History",
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: Get.height * 0.01,
+                          horizontal: Get.width * 0.04),
                       maxLines: 4,
                       maxLength: 500,
                     ),
@@ -886,57 +906,58 @@ class _EditprofilepageState extends State<Editprofilepage> {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: Get.width / 8,
+                        horizontal: Get.width * 0.02,
                       ),
                       child: InkWell(
                         onTap: () async {
-                          EasyLoading.show(status: ConstHelper.pleaseWaitMsg);
+                          try {
+                            EasyLoading.show(status: ConstHelper.pleaseWaitMsg);
 
-                          await ApiHelper.apiHelper
-                              .editProfile(
-                                  profession: selectedProfession.value,
-                                  compName: companyNameCon.value.text,
-                                  compType: companyTypeCon.value.text,
-                                  incomeLakh: annualIncomeCon.value.text,
-                                  marriedBrother: marriedBrotherCon.value,
-                                  unmarriedBrother: unMarriedBrotherCon.value,
-                                  marriedSister: marriedSisterCon.value,
-                                  unmarriedSister: unMarriedSisterCon.value,
-                                  altContactName: altContactName.value.text,
-                                  alterCnctNum: altContactNumber.value.text,
-                                  fullPhoto: "",
-                                  facePhoto: "",
-                                  briefFatherProfession:
-                                      briefOfFatherProfession.value.text,
-                                  sameGothra: marrySameGotra.value,
-                                  matchGanna: willYouMatchingGanna.value,
-                                  isManglik: areYouManglik.value,
-                                  marryManglik: areYouMarryAManglik.value,
-                                  olderBy: spouseOlderBy.value,
-                                  youngerBy: spouseYoungerBy.value,
-                                  bridebudget: homeController
-                                          .budgetCateModel.value.data
-                                          ?.firstWhere((element) =>
-                                              element.ranges ==
-                                              budgetOfBride.value)
-                                          .id
-                                          ?.toString() ??
-                                      "",
-                                  groombudget: homeController
-                                          .budgetCateModel.value.data
-                                          ?.firstWhere((element) =>
-                                              element.ranges ==
-                                              budgetOfGroom.value)
-                                          .id
-                                          ?.toString() ??
-                                      "",
-                                  workAftrMarrige: bridePermittedWork.value,
-                                  numYraddrs:
-                                      placeOfResidenceAfterMarriage.value.text,
-                                  ownrent: selectedHouseType.value,
-                                  marriedBfor: marriedBefore.value,
-                                  resAddress: currantAddress.value.text
-                                  /* whatsapp: txtWhatsappNo.text,
+                            await ApiHelper.apiHelper
+                                .editProfile(
+                                    profession: selectedProfession.value,
+                                    compName: companyNameCon.value.text,
+                                    compType: companyTypeCon.value.text,
+                                    incomeLakh: annualIncomeCon.value.text,
+                                    marriedBrother: marriedBrotherCon.value,
+                                    unmarriedBrother: unMarriedBrotherCon.value,
+                                    marriedSister: marriedSisterCon.value,
+                                    unmarriedSister: unMarriedSisterCon.value,
+                                    altContactName: altContactName.value.text,
+                                    alterCnctNum: altContactNumber.value.text,
+                                    fullPhoto: "",
+                                    facePhoto: "",
+                                    briefFatherProfession:
+                                        briefOfFatherProfession.value.text,
+                                    sameGothra: marrySameGotra.value,
+                                    matchGanna: willYouMatchingGanna.value,
+                                    isManglik: areYouManglik.value,
+                                    marryManglik: areYouMarryAManglik.value,
+                                    olderBy: spouseOlderBy.value,
+                                    youngerBy: spouseYoungerBy.value,
+                                    bridebudget: homeController
+                                            .budgetCateModel.value.data
+                                            ?.firstWhereOrNull((element) =>
+                                                element.ranges ==
+                                                budgetOfBride.value)
+                                            ?.id
+                                            ?.toString() ??
+                                        "",
+                                    groombudget: homeController
+                                            .budgetCateModel.value.data
+                                            ?.firstWhereOrNull((element) =>
+                                                element.ranges ==
+                                                budgetOfGroom.value)
+                                            ?.id
+                                            ?.toString() ??
+                                        "",
+                                    workAftrMarrige: bridePermittedWork.value,
+                                    numYraddrs: placeOfResidenceAfterMarriage
+                                        .value.text,
+                                    ownrent: selectedHouseType.value,
+                                    marriedBfor: marriedBefore.value,
+                                    resAddress: currantAddress.value.text
+                                    /* whatsapp: txtWhatsappNo.text,
                               working_city: txtWorkingCity.text,
                               ref_contact_name: txtReferenceName.text,
                               ref_contact_mobile: txtReferenceMobileNo.text,
@@ -949,25 +970,30 @@ class _EditprofilepageState extends State<Editprofilepage> {
                               permanent_address: txtAddress.text,
                               village_city: "",
                               profession: ''*/
-                                  )
-                              .then(
-                            (value) {
-                              Get.back();
-                              ConstHelper.successDialog(
-                                text: 'Profile Updated Successfully',
-                                seconds: 10,
-                              );
-                            },
-                          );
-                          Get.back();
-                          homeController.userData.value =
-                              (await ApiHelper.apiHelper.fetchProfile())!;
+                                    )
+                                .then(
+                              (value) {
+                                EasyLoading.dismiss();
+                                Get.back();
+                                ConstHelper.successDialog(
+                                  text: 'Profile Updated Successfully',
+                                  seconds: 10,
+                                );
+                              },
+                            );
+                            Get.back();
+                            homeController.userData.value =
+                                (await ApiHelper.apiHelper.fetchProfile())!;
+                          } catch (e) {
+                            EasyLoading.dismiss();
+                            print(e);
+                          }
                         },
                         child: Container(
                           width: Get.width,
                           decoration: BoxDecoration(
                             color: ConstHelper.orangeColor,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           alignment: Alignment.center,
                           padding: EdgeInsets.symmetric(
@@ -992,7 +1018,7 @@ class _EditprofilepageState extends State<Editprofilepage> {
               ),
             )),
       ),
-    );
+    ));
   }
 }
 
@@ -1018,8 +1044,7 @@ class CommonTextField extends StatelessWidget {
           textAlign: TextAlign.start,
           style: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.w600,
-            fontSize: Get.width * 0.04,
+            fontSize: Get.width * 0.035,
           ),
         ),
         Text(
@@ -1027,7 +1052,8 @@ class CommonTextField extends StatelessWidget {
           style: textStyle ??
               TextStyle(
                 color: Colors.black,
-                fontSize: Get.width * 0.035,
+                fontWeight: FontWeight.w600,
+                fontSize: Get.width * 0.04,
               ),
         ),
       ],
@@ -1096,9 +1122,10 @@ class CommonTextFormField extends StatelessWidget {
               ),
           decoration: InputDecoration(
             counterText: counterText,
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.02,
-                vertical: 0),
+            contentPadding: contentPadding ??
+                EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.02,
+                    vertical: 0),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: ConstHelper.blackColor, width: 1.2),
               borderRadius: BorderRadius.circular(14),

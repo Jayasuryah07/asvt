@@ -26,7 +26,7 @@ class _MembersDataShowPageState extends State<MembersDataShowPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(homeController.selectedMembersData.value.profileMainContactNum!);
+    print(homeController.selectedMembersData.value.profileMainContactNum ?? "");
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -50,8 +50,8 @@ class _MembersDataShowPageState extends State<MembersDataShowPage> {
             },
             icon: Icon(
               Icons.arrow_back,
-              size: Get.width / 18,
-              color: ConstHelper.orangeColor,
+              size: Get.width / 13,
+              color: ConstHelper.blackColor,
             ),
           ),
           centerTitle: true,
@@ -180,7 +180,7 @@ class _MembersDataShowPageState extends State<MembersDataShowPage> {
                       vertical: MediaQuery.of(context).size.width * 0.02),
                   decoration: BoxDecoration(
                     color: ConstHelper.orangeColor,
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   padding: EdgeInsets.symmetric(
                     horizontal: Get.width / 30,
@@ -732,7 +732,9 @@ class _MembersDataShowPageState extends State<MembersDataShowPage> {
                           ConstHelper.naMsg
                     },
                     {
-                      'Annual Income': homeController.selectedMembersData.value
+                      'Annual Income (In lacs)': homeController
+                              .selectedMembersData
+                              .value
                               .profileProfessionAnnualNetIncome
                               ?.toString() ??
                           ConstHelper.naMsg
@@ -757,18 +759,12 @@ class _MembersDataShowPageState extends State<MembersDataShowPage> {
                           ConstHelper.naMsg
                     },
                     {
-                      homeController.selectedMembersData.value
-                              .profileMainContactFullName ??
-                          ConstHelper.naMsg: homeController.selectedMembersData
-                              .value.profileMainContactNum ??
-                          ConstHelper.naMsg
+                      "Mobile (Father)":
+                          "${homeController.selectedMembersData.value.profileMainContactNum ?? ConstHelper.naMsg}"
                     },
                     {
-                      homeController.selectedMembersData.value
-                              .profileAlternateContactFullName ??
-                          ConstHelper.naMsg: homeController.selectedMembersData
-                              .value.profileAlternateContactNum ??
-                          ConstHelper.naMsg
+                      "Mobile (Mother)":
+                          "${homeController.selectedMembersData.value.profileAlternateContactNum ?? ConstHelper.naMsg}"
                     },
                     {
                       "Brother":
@@ -786,6 +782,81 @@ class _MembersDataShowPageState extends State<MembersDataShowPage> {
                     },
                   ],
                 ),
+                SizedBox(
+                  height: Get.width / 60,
+                ),
+                if ((homeController.selectedMembersData.value
+                                .profileHaveMarriedBefore ??
+                            "")
+                        .toString()
+                        .toLowerCase() !=
+                    "no")
+                  Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      InfoCard(
+                        icon: 'assets/image/kundaliSVG.svg',
+                        title: 'Earlier Marriage',
+                        data: [
+                          {
+                            'Is Married Before': homeController
+                                    .selectedMembersData
+                                    .value
+                                    .profileHaveMarriedBefore ??
+                                "-"
+                          },
+                          (homeController.selectedMembersData.value
+                                              .profileHaveMarriedBefore ??
+                                          "")
+                                      .toString()
+                                      .toLowerCase() ==
+                                  "yes and divorced"
+                              ? {
+                                  "Divorce Status": homeController
+                                          .selectedMembersData
+                                          .value
+                                          .profileDivorceStatus ??
+                                      "-"
+                                }
+                              : {
+                                  "When Spouse Died?": homeController
+                                          .selectedMembersData
+                                          .value
+                                          .profileSpouseDied ??
+                                      "-"
+                                },
+                          {
+                            "Num. Of Children From Prev. Marriage ":
+                                homeController.selectedMembersData.value
+                                        .profileChildrenNumFromPrevMarriage ??
+                                    "-"
+                          },
+                          {
+                            "Children with whom": homeController
+                                    .selectedMembersData
+                                    .value
+                                    .profileChildrenWith ??
+                                "-"
+                          },
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          0,
+                          Get.height * 0.005,
+                          Get.height * 0.019,
+                          0,
+                        ),
+                        child: RotatedBox(
+                          quarterTurns: 1,
+                          child: Image.asset(
+                            "assets/image/re-marriage.png",
+                            height: Get.height * 0.06,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 SizedBox(
                   height: Get.width / 60,
                 ),
@@ -809,12 +880,12 @@ class _MembersDataShowPageState extends State<MembersDataShowPage> {
                           ConstHelper.naMsg
                     },
                     {
-                      "Are you Manglik": homeController
+                      "Are you Manglik?": homeController
                               .selectedMembersData.value.profileIsManglik ??
                           ConstHelper.naMsg
                     },
                     {
-                      "Will you Marry A Manglik": homeController
+                      "Will you Marry A Manglik?": homeController
                               .selectedMembersData
                               .value
                               .profileWillMarryManglink ??
@@ -827,21 +898,27 @@ class _MembersDataShowPageState extends State<MembersDataShowPage> {
                 ),
                 InfoCard(
                   icon: 'assets/image/partnerSVG.svg',
-                  title: 'Partner preferences',
+                  title: 'Partner Preferences',
                   data: [
                     {
-                      'P. Spouse can be': homeController.selectedMembersData
-                              .value.profileSpouseCanBeOlderBy ??
+                      'P. Spouse can be elder(> yrs)': homeController
+                              .selectedMembersData
+                              .value
+                              .profileSpouseCanBeOlderBy ??
                           ConstHelper.naMsg
                     },
                     {
-                      'P. Spouse can be': homeController.selectedMembersData
-                              .value.profileSpouseCanBeYoungerBy ??
+                      'P. Spouse can be younger(< yrs)': homeController
+                              .selectedMembersData
+                              .value
+                              .profileSpouseCanBeYoungerBy ??
                           ConstHelper.naMsg
                     },
                     {
-                      "Bride permitted": homeController.selectedMembersData
-                              .value.profileBridePermittedToWorkAfterMarriage ??
+                      "Bride permitted to work after marriage?": homeController
+                              .selectedMembersData
+                              .value
+                              .profileBridePermittedToWorkAfterMarriage ??
                           ConstHelper.naMsg
                     },
                     {
@@ -885,30 +962,36 @@ class _MembersDataShowPageState extends State<MembersDataShowPage> {
                 SizedBox(
                   height: Get.width / 60,
                 ),
-                InfoCard(
-                  icon: 'assets/image/ruppeSVG.svg',
-                  title: 'Budget Info',
-                  data: [
-                    {
-                      'Budget Bride': homeController.selectedMembersData.value
-                              .profileBudgetCategoryId ??
-                          ConstHelper.naMsg
-                    },
-                    {
-                      'Budget Groom': homeController.selectedMembersData.value
-                              .profileGroomBudgetCategoryId ??
-                          ConstHelper.naMsg
-                    },
-                    {
-                      'Update Date':
-                          '${DateFormat("dd-MM-yyyy").format(homeController.selectedMembersData.value.updatedAt ?? DateTime.now())}',
-                    },
-                    {
-                      "Modify Date":
-                          '${DateFormat("dd-MM-yyyy").format(homeController.selectedMembersData.value.profileModifyDate ?? DateTime.now())}',
-                    },
-                  ],
-                ),
+                if ((homeController.userData.value.profileType?.toString() ==
+                    "2"))
+                  InfoCard(
+                    icon: 'assets/image/ruppeSVG.svg',
+                    title: 'Budget Info (In lacs)',
+                    data: [
+                      {
+                        'Budget Bride': homeController.selectedMembersData.value
+                                .profileBudgetCategoryId ??
+                            ConstHelper.naMsg
+                      },
+                      {
+                        'Budget Groom': homeController.selectedMembersData.value
+                                .profileGroomBudgetCategoryId ??
+                            ConstHelper.naMsg
+                      },
+                      {
+                        'Profile Created': DateFormat("dd-MM-yyyy").format(
+                            homeController.selectedMembersData.value
+                                    .profileRegistrationDate ??
+                                DateTime.now()),
+                      },
+                      {
+                        "Update Date": DateFormat("dd-MM-yyyy").format(
+                            homeController.selectedMembersData.value
+                                    .profileModifyDate ??
+                                DateTime.now()),
+                      },
+                    ],
+                  ),
                 SizedBox(
                   height: Get.width / 60,
                 ),
@@ -1177,8 +1260,11 @@ void showFeedbackDialog(
                           ],
                         ),
                       ),
+                      const SizedBox(
+                        height: 5,
+                      ),
                       // Disclaimer
-                      Padding(
+                      /*Padding(
                         padding: EdgeInsets.all(16),
                         child: Text(
                           "*User will be removed from list after feedback.",
@@ -1188,7 +1274,7 @@ void showFeedbackDialog(
                           ),
                           textAlign: TextAlign.center,
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
           ),
@@ -1301,6 +1387,7 @@ class InfoCard extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: text ??
@@ -1331,19 +1418,19 @@ class InfoCard extends StatelessWidget {
 }
 
 TextStyle headingTextStyle = TextStyle(
-    color: ConstHelper.blackColor,
+    color: ConstHelper.orangeColor,
     fontWeight: FontWeight.w600,
     fontSize: Get.width * 0.045,
     letterSpacing: 1);
 
 TextStyle titleTextStyle = TextStyle(
-  color: ConstHelper.blackColor,
+  color: ConstHelper.blackColor.withOpacity(0.8),
   fontSize: Get.width * 0.04,
   fontWeight: FontWeight.w500,
 );
 
 TextStyle valueTextStyle = TextStyle(
-  color: ConstHelper.orangeColor,
+  color: ConstHelper.blackColor,
   fontSize: Get.width * 0.04,
   fontWeight: FontWeight.w500,
 );

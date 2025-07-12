@@ -12,6 +12,7 @@ import '../Models/divorce_status_mmodel.dart';
 import '../Models/married_before_mmodel.dart';
 import '../Models/profession_model.dart';
 import '../Models/samaj_model.dart';
+import '../Models/sponsers_model.dart';
 import '../Models/work_after_marriage_model.dart';
 import '../Utils/ApiHelper.dart';
 import '../Utils/SharedPrefHelper.dart';
@@ -29,6 +30,7 @@ class HomeController extends GetxController {
   RxBool restore = false.obs;
   RxList<MembersDataModel> allMembersDataListGenderWise =
       <MembersDataModel>[].obs;
+  RxList<SponItem> sponItemList = <SponItem>[].obs;
   RxList<MembersDataModel> allShortlistedDataList = <MembersDataModel>[].obs;
   Rx<MembersDataModel> selectedMembersData = MembersDataModel().obs;
   Rx<SamajModel> samajModel = SamajModel().obs;
@@ -89,5 +91,9 @@ class HomeController extends GetxController {
 
   Future<void> getSamaj() async {
     samajModel.value = await ApiHelper.apiHelper.getSamaj();
+  }
+
+  Future<void> getSponData() async {
+    sponItemList.value = await ApiHelper.apiHelper.getSponsersList() ?? [];
   }
 }

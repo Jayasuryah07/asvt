@@ -39,6 +39,7 @@ class InfoRow extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: Get.width / 90),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
               child: Text(title.trim().isEmpty ? " - - - -" : title,
@@ -51,7 +52,7 @@ class InfoRow extends StatelessWidget {
               ? const SizedBox()
               : Expanded(
                   child: Text(
-                    value?.trim().isEmpty ?? true ? "N/A" : value!,
+                    value?.trim().isEmpty ?? true ? '-' : value!,
                     style: valueStyle,
                   ),
                 ),
@@ -423,7 +424,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         valueStyle: valueTextStyle,
                       ),
                       InfoRow(
-                        title: 'Annual income',
+                        title: 'Annual Income (In lacs)',
                         value: homeController
                             .userData.value.profileProfessionAnnualNetIncome
                             .toString(),
@@ -476,18 +477,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         valueStyle: valueTextStyle,
                       ),
                       InfoRow(
-                        title: homeController
-                                .userData.value.profileMainContactFullName ??
-                            "",
+                        title: "Mobile (Father)",
                         value:
                             homeController.userData.value.profileMainContactNum,
                         titleStyle: titleTextStyle,
                         valueStyle: valueTextStyle,
                       ),
                       InfoRow(
-                        title: homeController.userData.value
-                                .profileAlternateContactFullName ??
-                            "",
+                        title: "Mobile (Mother)",
                         value: homeController
                             .userData.value.profileAlternateContactNum,
                         titleStyle: titleTextStyle,
@@ -515,7 +512,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       ),*/
                       InfoRow(
                         title:
-                            'Currant Address (${homeController.userData.value.profileHouseType ?? "N/A"}  - ${homeController.userData.value.profileNumOfYearsAtThisAddress ?? "N/A"})',
+                            'Currant Address (${homeController.userData.value.profileHouseType ?? '-'}  - ${homeController.userData.value.profileNumOfYearsAtThisAddress ?? '-'})',
                         value: homeController
                             .userData.value.profileCurrentResidAddress,
                         titleStyle: titleTextStyle,
@@ -586,13 +583,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         valueStyle: valueTextStyle,
                       ),
                       InfoRow(
-                        title: 'Are you Manglik',
+                        title: 'Are you Manglik?',
                         value: homeController.userData.value.profileIsManglik,
                         titleStyle: titleTextStyle,
                         valueStyle: valueTextStyle,
                       ),
                       InfoRow(
-                        title: 'Will you Marry A Manglik',
+                        title: 'Will you Marry A Manglik?',
                         value: homeController
                             .userData.value.profileWillMarryManglink,
                         titleStyle: titleTextStyle,
@@ -644,15 +641,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         height: Get.width / 20,
                       ),
                       InfoRow(
-                        title: 'P. Spouse can be',
+                        title: 'P. Spouse can be elder(> yrs)',
                         value: homeController
                                 .userData.value.profileSpouseCanBeOlderBy ??
-                            "N/A",
+                            '-',
                         titleStyle: titleTextStyle,
                         valueStyle: valueTextStyle,
                       ),
                       InfoRow(
-                        title: 'P. Spouse can be',
+                        title: 'P. Spouse can be younger(< yrs)',
                         value: homeController
                             .userData.value.profileSpouseCanBeYoungerBy,
                         titleStyle: titleTextStyle,
@@ -752,7 +749,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           ),
                           Flexible(
                             child: Text(
-                              'Budget Info',
+                              'Budget Info (In lacs)',
                               style: headingTextStyle,
                             ),
                           ),
@@ -769,15 +766,18 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         valueStyle: valueTextStyle,
                       ),
                       InfoRow(
-                        title: 'Budget groom',
+                        title: 'Budget Groom',
                         value: homeController
                             .userData.value.profileGroomBudgetCategoryId,
                         titleStyle: titleTextStyle,
                         valueStyle: valueTextStyle,
                       ),
+                      SizedBox(
+                        height: Get.width / 30,
+                      ),
                       InfoRow(
                         title:
-                            'Update Date - ${DateFormat("dd-MM-yyyy").format(homeController.userData.value.updatedAt ?? DateTime.now())}',
+                            'Profile Created - ${DateFormat("dd-MM-yyyy").format(homeController.userData.value.profileRegistrationDate ?? DateTime.now())}',
                         value: "",
                         isTrue: true,
                         titleStyle: titleTextStyle,
@@ -785,7 +785,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       ),
                       InfoRow(
                         title:
-                            'Modify Date - ${DateFormat("dd-MM-yyyy").format(homeController.userData.value.profileModifyDate ?? DateTime.now())}',
+                            'Update Date - ${DateFormat("dd-MM-yyyy").format(homeController.userData.value.profileModifyDate ?? DateTime.now())}',
                         value: "",
                         isTrue: true,
                         titleStyle: titleTextStyle,
@@ -808,7 +808,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             width: Get.width,
                             decoration: BoxDecoration(
                               color: ConstHelper.orangeColor,
-                              borderRadius: BorderRadius.circular(50),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(
@@ -924,10 +924,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
       builder: (context) => Dialog(
         backgroundColor: ConstHelper.whiteColor,
         surfaceTintColor: ConstHelper.whiteColor,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+        insetPadding: EdgeInsets.symmetric(horizontal: Get.width * 0.04),
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.04),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -960,7 +960,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       child: ElevatedButton(
                         onPressed: onPressed,
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: ConstHelper.orangeColor),
+                          backgroundColor: ConstHelper.orangeColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                          ),
+                        ),
                         child: Text(
                           "Confirm",
                           style: TextStyle(
@@ -979,7 +985,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       child: ElevatedButton(
                         onPressed: () => Get.back(),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white),
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                          ),
+                        ),
                         child: Text(
                           "Cancel",
                           style: TextStyle(
@@ -1003,19 +1015,19 @@ class _MyProfilePageState extends State<MyProfilePage> {
   }
 
   TextStyle headingTextStyle = TextStyle(
-      color: ConstHelper.blackColor,
+      color: ConstHelper.orangeColor,
       fontWeight: FontWeight.w600,
       fontSize: Get.width * 0.045,
       letterSpacing: 1);
 
   TextStyle titleTextStyle = TextStyle(
-    color: ConstHelper.blackColor,
+    color: ConstHelper.blackColor.withOpacity(0.8),
     fontSize: Get.width * 0.04,
     fontWeight: FontWeight.w500,
   );
 
   TextStyle valueTextStyle = TextStyle(
-    color: ConstHelper.orangeColor,
+    color: ConstHelper.blackColor,
     fontSize: Get.width * 0.04,
     fontWeight: FontWeight.w500,
   );

@@ -1,1 +1,0 @@
-/Users/user/StudioProjects/projects/asvt_flutter_app/build/rive_common/intermediates/cxx/RelWithDebInfo/644e6r4y/obj/armeabi-v7a

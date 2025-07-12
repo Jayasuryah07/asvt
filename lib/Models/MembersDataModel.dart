@@ -549,17 +549,20 @@ class MembersDataModel {
         profileRegistrationDate: json["profile_registration_date"] == null
             ? null
             : DateTime.parse(json["profile_registration_date"]),
-        profileModifyDate: json["profile_modify_date"] == null
+        profileModifyDate: json["profile_modify_date"] == null ||
+                json["profile_modify_date"].toString() == ""
             ? null
             : DateTime.parse(json["profile_modify_date"]),
         profileDeviceId: json["profile_device_id"],
         deviceIdCount: json["device_id_count"],
-        profileLastLogin: json["profile_last_login"] == null
+        profileLastLogin: json["profile_last_login"] == null ||
+                json["profile_last_login"].toString().isEmpty
             ? null
             : DateTime.parse(json["profile_last_login"]),
         profileLoginFlag: json["profile_login_flag"],
         profilePackageCategory: json["profile_package_category"],
-        profileValidityEnds: json["profile_validity_ends"] == null
+        profileValidityEnds: json["profile_validity_ends"] == null ||
+                json["profile_validity_ends"].toString().isEmpty
             ? null
             : DateTime.parse(json["profile_validity_ends"]),
         profileApproved: json["profile_approved"],
