@@ -5,6 +5,14 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} else {
+    println("⚠️ keystore.properties file not found at: ${keystorePropertiesFile.absolutePath}")
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -15,22 +23,23 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '7'
+    flutterVersionCode = '8'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '1.0.8'
 }
 
 android {
     namespace "ags.matrimony.asvtbangalore"
-    compileSdk 34
-    ndkVersion "25.1.8937393"
+    compileSdk 36
+    ndkVersion "26.1.10909125"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -46,10 +55,28 @@ android {
         applicationId "ags.matrimony.asvtbangalore"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdkVersion flutter.minSdkVersion //flutter.minSdkVersion
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+    }
+
+    signingConfigs {
+        release {
+            def keyAliasProp = keystoreProperties["keyAlias"]
+            def keyPasswordProp = keystoreProperties["keyPassword"]
+            def storeFilePath = keystoreProperties["storeFile"]
+            def storePasswordProp = keystoreProperties["storePassword"]
+
+            if (keyAliasProp && keyPasswordProp && storeFilePath && storePasswordProp) {
+                keyAlias = keyAliasProp
+                keyPassword = keyPasswordProp
+                storeFile = file(storeFilePath)
+                storePassword = storePasswordProp
+            } else {
+                println("⚠️ Skipping signing config: Missing keystore properties.")
+            }
+        }
     }
 
     buildTypes {
@@ -67,4 +94,9 @@ flutter {
 
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.14.0')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.4"
+
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-messaging'
 }

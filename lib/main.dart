@@ -5,25 +5,26 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:flutter_windowmanager_plus/flutter_windowmanager_plus.dart';
+
 import 'package:get/get.dart';
 
-import 'Screens/GetStartedScreen/GetStartedPage.dart';
-import 'Screens/HomeScreen/HomePage.dart';
-import 'Screens/LoginScreen/LoginPage.dart';
-import 'Screens/SplashScreen/splash_common_page.dart';
-import 'Utils/ConstHelper.dart';
-import 'Utils/SharedPrefHelper.dart';
+import 'screens/get_started_screen/get_started_page.dart';
+import 'screens/home_screen/home_page.dart';
+import 'screens/login_screen/login_page.dart';
+import 'screens/splash_screen/splash_common_page.dart';
+import 'utils/const_helper.dart';
+import 'utils/shared_pref_helper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     if (Platform.isAndroid) {
-      await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+      await FlutterWindowManagerPlus.addFlags(FlutterWindowManagerPlus.FLAG_SECURE);
     }
-    print('Success to block screen recording and screenshots:');
+    debugPrint('Success to block screen recording and screenshots:');
   } catch (e) {
-    print('Failed to block screen recording and screenshots: $e');
+    debugPrint('Failed to block screen recording and screenshots: $e');
   }
   try {
     if (Platform.isAndroid) {
@@ -51,9 +52,9 @@ Future<void> main() async {
       );
     }
     await FirebaseMessaging.instance.requestPermission();
-    print("✅ Firebase initialized successfully");
+    debugPrint("✅ Firebase initialized successfully");
   } catch (e) {
-    print("❌ Firebase Initialization Failed: $e");
+    debugPrint("❌ Firebase Initialization Failed: $e");
   }
   await SharedPrefHelper.sharedPrefHelper.initSharedPref();
   SystemChrome.setPreferredOrientations(
@@ -103,7 +104,7 @@ void configLoading() {
     ..backgroundColor = Colors.green
     ..indicatorColor = Colors.yellow
     ..textColor = Colors.yellow
-    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..maskColor = Colors.blue.withAlpha(128)
     ..userInteractions = false
     ..maskType = EasyLoadingMaskType.black
     ..dismissOnTap = false;
