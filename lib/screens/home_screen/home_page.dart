@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controllers/home_controller.dart';
@@ -43,6 +44,22 @@ class _HomePageState extends State<HomePage> {
   RxList<MembersDataModel> searchedMembersDataListGenderWise =
       <MembersDataModel>[].obs;
   List<String> educationSelected = [];
+  bool _showUpdateBar = false;
+  Future<void> _checkForUpdate() async {
+  final newVersion = NewVersionPlus(
+    androidId: "ags.matrimony.asvtbangalore",
+  );
+
+  final status = await newVersion.getVersionStatus();
+
+  if (status == null) return;
+
+  if (status.canUpdate && mounted) {
+    setState(() {
+      _showUpdateBar = true;
+    });
+  }
+}
 
   Future<void> fetchAllData() async {
     await getUserData();
@@ -261,6 +278,10 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     fetchAllData();
     super.initState();
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    _checkForUpdate();
+  });
   }
 
   @override
